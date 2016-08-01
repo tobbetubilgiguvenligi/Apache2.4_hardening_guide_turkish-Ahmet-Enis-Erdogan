@@ -141,15 +141,25 @@ anlamina gelebilir. Timeout degerini kucultmek icin asagidaki satiri conf dosyas
 Mod Security acik kaynak kodlu bir Web Application Firewall' dur. Genel bir web uygulamasi 
 korumasi icin ana kurallar belirlenmistir.
 
+### 14.1 mod_security kurulumu
 
+Mod Security' yi kurmak icin asagidaki komutu calistirin.
+> sudo apt-get install libapache2-mod-security2
 
+modulu etkin hale getirmek icin 
+> a2enmod security2
+Baska UNIX distolarda core rule lari da ayrica indirip aktif hale getirmeniz gerekebilir. 
+Bunun icin asagidaki adimlari takip edebilirsiniz.
 
+[https://github.com/SpiderLabs/owasp-modsecurity-crs/zipball/master](https://github.com/SpiderLabs/owasp-modsecurity-crs/zipball/master)  
+Bu linkten core rule'lari indirdikten sonra zip dosyasini acin. Icindeki dosylari `$APACHE_INST_DIR/conf/` directory'sine
+kopyalayin. `modsecurity_crs_10_setup.conf.example` dosyasini `modsecurity_crs_10_setup.conf` 
+olarak adlandirin.  
 
-Secure Apache with SSL Certificates
-## Web Application Security
-### Cookies
-### xss protection
+Bu rule'lari etkinlestirmek icin de conf dosyasina asagidaki directive'i ekleyin
+> \<IfModule security2_module>  
+> &nbsp;&nbsp;&nbsp;&nbsp;Include conf/modsecurity_crs_10_setup.conf  
+> &nbsp;&nbsp;&nbsp;&nbsp;Include conf/base_rules/*.conf  
+> \</IfModule>
 
-## Dynamic Content Security
-### CGI 
-
+su an mod_security sayesinde web uygulamaniz icin bir WAF kurmus bulunmaktasiniz.
