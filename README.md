@@ -1,7 +1,7 @@
 # Apache HTTP Server 2.4 Sıkılaştırma Kılavuzu
 
 Bu kılavuzda farklı kaynaklardan yararlanarak bir Apache HTTP 2.4 serverini sıkılaştırma ile alakalı
-bilgiler paylaşıyorum. Herhangi bir UNIX sistem üzerinde Apache HTTP Server' inizi
+bilgiler paylaşıyorum. Herhangi bir UNIX sistem üzerinde Apache HTTP Server' ınızı
 daha güvenli hale getirmek için bu adımları izleyebilirsiniz. Ben sistem olarak Ubuntu 14.04 üzerinde
 çalıştım. Ancak diğer UNIX distrolarında da bu kılavuzdan yararlanamamanız için bir engel
 olduğunu düşünmüyorum.
@@ -18,7 +18,7 @@ directiveleri ekleyebilirsiniz.
 ServerTokens Prod  
 ServerSignatures Off
 ```
-## 2. Directory lere erişimi engelleyin
+## 2. Directory' lere erişimi engelleyin
 Default olarak eger bir index.html dosyaniz yoksa Apache root directorynin altındaki herşeyi
 listeler. Bu durumda kullanıcının görmesini istemediğiniz dosyalar da erişime açık kalır. 
 Bu durumu engellemek için httpd.conf dosyasında erişimi engellemek istediğiniz Directorylerde
@@ -28,23 +28,23 @@ asağıdaki değişikliği yapabilirsiniz.
     Options -Indexes  
 </Directory>
 ```
-## 3. Apache yi surekli olarak guncel tutun
-Apache nin developer community si surekli olarak güvenlik açıklarını kapatmak için ugrasiyor.
-Bu nedenle surekli olarak en guncel Apache versiyonunu kullanmaniz sizin faydaniza olacaktir.
+## 3. Apache' yi surekli olarak güncel tutun
+Apache' nin developer community si surekli olarak güvenlik açıklarını kapatmak için ugrasiyor.
+Bu nedenle surekli olarak en güncel Apache versiyonunu kullanmaniz sizin faydaniza olacaktir.
 Apache versiyonunu asağıdaki command ile öğrenebibilirsiniz.
 ```
 apache2 -v  
 ```
 
-## 4. Apache'yi baska ayricaliksiz kullanıcı ve grupla calistirin
-Ubuntu'da apache yi apt-get install ile yüklediğinizde Apache zaten user ve group olarak www-data' yi
-kullaniyor. Ancak baska distrolarda Apache daemon olarak veya nobody olarak calistiriliyor olabilir. 
+## 4. Apache' yi başka ayrıcalıksız kullanıcı ve grupla çalıştırın
+Ubuntu'da apache' yi apt-get install ile yüklediğinizde Apache zaten user ve group olarak www-data' yi
+kullaniyor. Ancak baska distrolarda Apache daemon olarak veya nobody olarak calıştırılıyor olabilir. 
 Bu durumda asağıdaki commandleri kullanarak yeni bir group ve user olusturun.
 ```
 groupadd apache  
 useradd -G apache apache  
 ```
-Apache nin yuklendigi directory de (bundan sonra bu directory $APACHE_INST_DIR olarak belirtilecek) 
+Apache' nin yüklendiği directory de (bundan sonra bu directory $APACHE_INST_DIR olarak belirtilecek) 
 httpd.conf veya apache2.conf seklinde bir dosya olacaktir(bundan sonra sadece apache2.conf belirtilecek).
 Bu dosyada User ve Group kısımlarını asağıdaki gibi degistirin
 
@@ -65,7 +65,7 @@ root directory directive'inde yapmaniz gerekiyor.
     AllowOverride None  
 </Directory>
 ```
-Bu değişikliği yaptıktan sonra Apache yi yeniden baslatin veya reload edin.
+Bu değişikliği yaptıktan sonra Apache' yi yeniden baslatin veya reload edin.
 ## 6. HTTP Request Methodlarını limitleme
 Cogu zaman web uygulamanizda sadece GET, POST, HEAD methodlarına ihtiyaciniz olacak. Ancak 
 apache bu methodlarla birlikte PUT, DELETE, TRACE, CONNECT gibi diğer HTTP 1.1 protokol metodlarını
@@ -77,9 +77,9 @@ directory directive lerinin içinde kullanabilirsiniz.
     deny from all
 </LimitExcept>
 ```
-## 7. HTTP TRACE metodunu devre dışı birakin
+## 7. HTTP TRACE metodunu devre dışı bırakın
 Default olarak Apache web server TRACE metodu etkindir. Bu durum Cross Site Tracing atagina ve
-saldirganların kullanıcıların cookie bilgilerine ulasmasina olanak saglar. Bu nedenle TraceEnable
+saldirganların kullanıcıların cookie bilgilerine ulasmasına olanak saglar. Bu nedenle TraceEnable
 ayarini off yapmaniz bu tur atakları önlemenizi saglayacaktir. $APACHE_INST_DIR/apache2.conf
 dosyasında asağıdaki sekilde degisiklik yaptıktan sonra Apache' yi tekrar baslatabilirsiniz.
 ```
@@ -107,16 +107,16 @@ etkin hale getirmek için Apache'yi yeniden baslatmaniz gerekiyor.
 
 ## 9. Clickjacking ataklarından koruma
 Clickjacking saldirganların site icerisinde tiklanabilir iceriklere hyperlinkler gizlemesi 
-kullanıcıları yaniltmasidir. Bunu engellemek için conf dosyasina su satırı ekleyebilirsiniz. 
+kullanıcıları yaniltmasıdir. Bunu engellemek için conf dosyasina su satırı ekleyebilirsiniz. 
 Bu yontemde de Header'da degisiklik yapabilmeniz için Apache' nin header modulunu onceki gibi 
 etkin hale getirmeniz gerekiyor. 
 ```
 Header always append X-Frame-Options SAMEORIGIN
 ```
 
-## 10. Server Side Include ları devre dışı birakma
+## 10. Server Side Include ları devre dışı bırakma
 Server Side Include(SSI) lar server uzerine ek yuk bindirdiginden cok yogun bir trafik aliyorsaniz
-veya ortak bir environment kullaniyorsaniz SSI' i devre dışı birakmayi dusunebilirsiniz.
+veya ortak bir environment kullaniyorsaniz SSI' i devre dışı bırakmayi dusunebilirsiniz.
 SSI'i devre dışı bırakacağınız direcotry directive' inde asağıdaki gibi değişiklik yapabilirsiniz.
 ```
 <Directory /var/www/html>  
@@ -124,14 +124,14 @@ SSI'i devre dışı bırakacağınız direcotry directive' inde asağıdaki gibi
     ...  
 </Directory> 
 ```
-## 11. X-XSS Korunmasi
-Cross Site Scripting korumasi bircok web browser da bypass edilebiliyor. Ancak web uygulamasi
+## 11. X-XSS Korunması
+Cross Site Scripting koruması bircok web browser da bypass edilebiliyor. Ancak web uygulaması
 için bu korumayi zorla etkin hale getirebilirsiniz. Bunun için conf dosyasina asağıdaki satırı
 ekleyebilirsiniz.
 ```
 Header X-XSS-Protection "1; mode=block"
 ```
-## 12. HTTP 1.0 protokolunu kullanim dışı birakma
+## 12. HTTP 1.0 protokolunu kullanim dışı bırakma
 Güvenlik acisindan eski protokolleri kullanmak riskli oldugundan HTTP 1.0 protokolunu kullanim
 dışı birakabilirsiniz. Bunun için rewrite modulunu kullanmaniz gerekecek. Rewrite modulunu etkin
 hale getirmek için 
@@ -149,21 +149,20 @@ RewriteRule .* - [F]
 
 ve Apache' yi yeniden baslatin.
 
-## 13. Timeout degerini kucultme
+## 13. Timeout degerini azaltma
 Apache' de default olarak timeout degeri 300 saniye. Bu DoS ataklarının kurbani olabileceginiz
 anlamina gelebilir. Timeout degerini kucultmek için asağıdaki satırı conf dosyasina ekleyebilirsiniz.
 ```
 Timeout 60
 ```
-## 14. mod_security modulunun kullanilmasi
+## 14. mod_security modulunun kullanılması
 
-Mod Security açık kaynak kodlu bir Web Application Firewall' dur. Genel bir web uygulamasi 
-korumasi için ana kurallar belirlenmistir.
+Mod Security açık kaynak kodlu bir Web Application Firewall' dur. Genel bir web uygulaması 
+koruması için ana kurallar belirlenmiştir.
 
 ### 14.1 mod_security kurulumu
 
-Mod Security' yi kurmak için asağıdaki komutu calistirin.
-```
+Mod Security' yi kurmak için asağıdaki komutu calıştırılıyor`
 $ sudo apt-get install libapache2-mod-security2
 ```
 modulu etkin hale getirmek için 
