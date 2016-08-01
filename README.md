@@ -91,7 +91,7 @@ bloklayacaktir.
 ## 8. Cookie'yi HttpOnly ve Secure flag ile olusturun
 Cogu Cross Site Scripting atagini cookie de HttpOnly ve Secure flagleri ile engelleyebilirsiniz.
 HttpOnly ve Secure flagleri olmadan cookieler manipule edilerek saldirilar yapilabilir.
-HttpOnly ve Secure flaglerini set etmek için oncelikle headers modulunu etkin hale getirmeniz gerekiyor. 
+HttpOnly ve Secure flaglerini set etmek için oncelikle headers modülünü etkin hale getirmeniz gerekiyor. 
 Ubuntu'da su sekilde yapabilirsiniz
 ```
 a2enmod headers
@@ -108,7 +108,7 @@ etkin hale getirmek için Apache'yi yeniden baslatmaniz gerekiyor.
 ## 9. Clickjacking ataklarından koruma
 Clickjacking saldirganların site icerisinde tiklanabilir iceriklere hyperlinkler gizlemesi 
 kullanıcıları yaniltmasıdir. Bunu engellemek için conf dosyasina su satırı ekleyebilirsiniz. 
-Bu yontemde de Header'da degisiklik yapabilmeniz için Apache' nin header modulunu onceki gibi 
+Bu yontemde de Header'da degisiklik yapabilmeniz için Apache' nin header modülünü onceki gibi 
 etkin hale getirmeniz gerekiyor. 
 ```
 Header always append X-Frame-Options SAMEORIGIN
@@ -131,9 +131,9 @@ ekleyebilirsiniz.
 ```
 Header X-XSS-Protection "1; mode=block"
 ```
-## 12. HTTP 1.0 protokolunu kullanim dışı bırakma
-Güvenlik acisindan eski protokolleri kullanmak riskli oldugundan HTTP 1.0 protokolunu kullanim
-dışı birakabilirsiniz. Bunun için rewrite modulunu kullanmaniz gerekecek. Rewrite modulunu etkin
+## 12. HTTP 1.0 protokolünü kullanım dışı bırakma
+Güvenlik acisindan eski protokolleri kullanmak riskli oldugundan HTTP 1.0 protokolünü kullanım
+dışı birakabilirsiniz. Bunun için rewrite modülünü kullanmaniz gerekecek. Rewrite modülünü etkin
 hale getirmek için 
 ```
 a2enmod rewrite
@@ -149,13 +149,13 @@ RewriteRule .* - [F]
 
 ve Apache' yi yeniden baslatin.
 
-## 13. Timeout degerini azaltma
+## 13. Timeout değerini azaltma
 Apache' de default olarak timeout degeri 300 saniye. Bu DoS ataklarının kurbani olabileceginiz
 anlamina gelebilir. Timeout degerini kucultmek için asağıdaki satırı conf dosyasina ekleyebilirsiniz.
 ```
 Timeout 60
 ```
-## 14. mod_security modulunun kullanılması
+## 14. mod_security modülünün kullanılması
 
 Mod Security açık kaynak kodlu bir Web Application Firewall' dur. Genel bir web uygulaması 
 koruması için ana kurallar belirlenmiştir.
@@ -163,9 +163,11 @@ koruması için ana kurallar belirlenmiştir.
 ### 14.1 mod_security kurulumu
 
 Mod Security' yi kurmak için asağıdaki komutu calıştırılıyor`
+```
 $ sudo apt-get install libapache2-mod-security2
 ```
 modulu etkin hale getirmek için 
+
 ```
 a2enmod security2
 ```  
@@ -184,7 +186,7 @@ Bu rule'ları etkinlestirmek için de conf dosyasina asağıdaki directive'i ekl
     Include conf/base_rules/*.conf  
 </IfModule>
 ```
-su an mod_security sayesinde web uygulamaniz için bir WAF kurmuş bulunmaktasınız.
+şu an mod_security sayesinde web uygulamaniz için bir WAF kurmuş bulunmaktasınız.
 
 
 ## Referanslar
