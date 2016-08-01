@@ -62,9 +62,9 @@ Default olarak kullanicilar .htaccess dosyasini kullanarak apache configuration 
 edebilirler. Bunu engellemek icin conf dosyanizda($APACHE_INST_DIR/apache2.conf) AllowOverride i None olarak set etmeniz gerekiyor. Bunu 
 root directory directive'inde yapmaniz gerekiyor.
 ```
-\<Directory />  
+<Directory />  
     AllowOverride None  
-\</Directory>
+</Directory>
 ```
 Bu degisikligi yaptiktan sonra Apache yi yeniden baslatin veya reload edin.
 ## 6. HTTP Request Methodlarini limitleme
@@ -123,7 +123,7 @@ SSI'i devre disi birakacaginiz direcotry directive' inde asagidaki gibi degisikl
 <Directory /var/www/html>  
     Options -Includes -Indexes  
     ...  
-\</Directory> 
+</Directory> 
 ```
 ## 11. X-XSS Korunmasi
 Cross Site Scripting korumasi bircok web browser da bypass edilebiliyor. Ancak web uygulamasi
@@ -132,7 +132,7 @@ ekleyebilirsiniz.
 ```
 Header X-XSS-Protection "1; mode=block"
 ```
-## 12. Sadece HTTP 1.0 protokolunu kullanim disi birakma
+## 12. HTTP 1.0 protokolunu kullanim disi birakma
 Güvenlik acisindan eski protokolleri kullanmak riskli oldugundan HTTP 1.0 protokolunu kullanim
 disi birakabilirsiniz. Bunun icin rewrite modulunu kullanmaniz gerekecek. Rewrite modulunu etkin
 hale getirmek icin 
