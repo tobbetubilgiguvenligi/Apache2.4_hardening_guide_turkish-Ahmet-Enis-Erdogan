@@ -1,53 +1,52 @@
 # Apache HTTP Server 2.4 Sıkılaştırma Kılavuzu
 
-Bu kılavuzda farklı kaynaklardan yararlanarak bir Apache HTTP 2.4 serverını sıkılaştırma ile alakalı
-bilgiler paylasiyorum. Herhangi bir UNIX sistem üzerinde Apache HTTP Server' ınızı
-daha güvenli hale getirmek icin bu adımları izleyebilirsiniz. Ben sistem olarak Ubuntu 14.04 üzerinde
+Bu kılavuzda farklı kaynaklardan yararlanarak bir Apache HTTP 2.4 serverini sıkılaştırma ile alakalı
+bilgiler paylaşıyorum. Herhangi bir UNIX sistem üzerinde Apache HTTP Server' inizi
+daha güvenli hale getirmek için bu adımları izleyebilirsiniz. Ben sistem olarak Ubuntu 14.04 üzerinde
 çalıştım. Ancak diğer UNIX distrolarında da bu kılavuzdan yararlanamamanız için bir engel
 olduğunu düşünmüyorum.
 
-## 1. Server hakkinda bilgileri gizleyin
-### 1.1. Apache ve OS versiyonunun saklanmasi
-Default olarak herhangi bir hata sayfasinda kullanici sizin kullandiginiz apache versiyonunu 
-gorebilir. Bu da saldirganlarin sizin kullandiginiz sistemi anlamaya calismasi surecini ortadan
-kaldirir ve onlarin isini kolaylastirmis olursunuz.
+## 1. Server hakkında bilgileri gizleyin
+Default olarak herhangi bir hata sayfasında kullanıcı sizin kullandığınız apache versiyonunu 
+görebilir. Bu da saldırganların sizin kullandığınız sistemi anlamaya çalışma sürecini ortadan
+kaldırır ve onların işini kolaylaştırmış olursunuz.
 
-Server hakkindaki bilgileri gizlemek icin apache2.conf(bazi distrolarda httpd.conf) dosyasina su 
+Server hakkındaki bilgileri gizlemek için apache2.conf(bazi distrolarda httpd.conf) dosyasina su 
 directiveleri ekleyebilirsiniz.
 
 ```
 ServerTokens Prod  
 ServerSignatures Off
 ```
-## 2. Directory lere erisimi engelleyin
-Default olarak eger bir index.html dosyaniz yoksa Apache root directorynin altindaki herseyi
-listeler. Bu durumda kullanicinin gormesini istemediginiz dosyalar da erisime acik kalir. 
-Bu durumu engellemek icin httpd.conf dosyasinda erisimi engellemek istediginiz Directorylerde
-asagidaki degisikligi yapabilirsiniz.
+## 2. Directory lere erişimi engelleyin
+Default olarak eger bir index.html dosyaniz yoksa Apache root directorynin altındaki herşeyi
+listeler. Bu durumda kullanıcının görmesini istemediğiniz dosyalar da erişime açık kalır. 
+Bu durumu engellemek için httpd.conf dosyasında erişimi engellemek istediğiniz Directorylerde
+asağıdaki değişikliği yapabilirsiniz.
 ```
 <Directory /var/www/html>  
     Options -Indexes  
 </Directory>
 ```
 ## 3. Apache yi surekli olarak guncel tutun
-Apache nin developer community si surekli olarak güvenlik aciklarini kapatmak icin ugrasiyor.
+Apache nin developer community si surekli olarak güvenlik açıklarını kapatmak için ugrasiyor.
 Bu nedenle surekli olarak en guncel Apache versiyonunu kullanmaniz sizin faydaniza olacaktir.
-Apache versiyonunu asagidaki command ile ogrenebibilirsiniz.
+Apache versiyonunu asağıdaki command ile öğrenebibilirsiniz.
 ```
 apache2 -v  
 ```
 
-## 4. Apache'yi baska ayricaliksiz kullanici ve grupla calistirin
-Ubuntu'da apache yi apt-get install ile yuklediginizde Apache zaten user ve group olarak www-data' yi
+## 4. Apache'yi baska ayricaliksiz kullanıcı ve grupla calistirin
+Ubuntu'da apache yi apt-get install ile yüklediğinizde Apache zaten user ve group olarak www-data' yi
 kullaniyor. Ancak baska distrolarda Apache daemon olarak veya nobody olarak calistiriliyor olabilir. 
-Bu durumda asagidaki commandleri kullanarak yeni bir group ve user olusturun.
+Bu durumda asağıdaki commandleri kullanarak yeni bir group ve user olusturun.
 ```
 groupadd apache  
 useradd -G apache apache  
 ```
 Apache nin yuklendigi directory de (bundan sonra bu directory $APACHE_INST_DIR olarak belirtilecek) 
 httpd.conf veya apache2.conf seklinde bir dosya olacaktir(bundan sonra sadece apache2.conf belirtilecek).
-Bu dosyada User ve Group kisimlarini asagidaki gibi degistirin
+Bu dosyada User ve Group kısımlarını asağıdaki gibi degistirin
 
 ```
 User apache  
@@ -56,69 +55,69 @@ Group apache
 
 dosyayi kaydedip Apache'yi tekrar baslatin.
 
-## 5. System ayarlarini koruma
+## 5. System ayarlarını koruma
 
-Default olarak kullanicilar .htaccess dosyasini kullanarak apache configuration ini override
-edebilirler. Bunu engellemek icin conf dosyanizda($APACHE_INST_DIR/apache2.conf) AllowOverride i None olarak set etmeniz gerekiyor. Bunu 
+Default olarak kullanıcılar .htaccess dosyasini kullanarak apache configuration ini override
+edebilirler. Bunu engellemek için conf dosyanizda($APACHE_INST_DIR/apache2.conf) AllowOverride i None olarak set etmeniz gerekiyor. Bunu 
 root directory directive'inde yapmaniz gerekiyor.
 ```
 <Directory />  
     AllowOverride None  
 </Directory>
 ```
-Bu degisikligi yaptiktan sonra Apache yi yeniden baslatin veya reload edin.
-## 6. HTTP Request Methodlarini limitleme
-Cogu zaman web uygulamanizda sadece GET, POST, HEAD methodlarina ihtiyaciniz olacak. Ancak 
-apache bu methodlarla birlikte PUT, DELETE, TRACE, CONNECT gibi diğer HTTP 1.1 protokol metodlarini
-da destekliyor. Bu durum potansiyel riskleri dogurdugundan sadece kullanilan HTTP methodlarini
-kabul ederek riski ortadan kaldirabilirsiniz. Asagidaki directive i limitlemek istediginiz
-directory directive lerinin icinde kullanabilirsiniz.
+Bu değişikliği yaptıktan sonra Apache yi yeniden baslatin veya reload edin.
+## 6. HTTP Request Methodlarını limitleme
+Cogu zaman web uygulamanizda sadece GET, POST, HEAD methodlarına ihtiyaciniz olacak. Ancak 
+apache bu methodlarla birlikte PUT, DELETE, TRACE, CONNECT gibi diğer HTTP 1.1 protokol metodlarını
+da destekliyor. Bu durum potansiyel riskleri dogurdugundan sadece kullanilan HTTP methodlarını
+kabul ederek riski ortadan kaldirabilirsiniz. Asağıdaki directive' i limitlemek istediğiniz
+directory directive lerinin içinde kullanabilirsiniz.
 ```
 <LimitExcept GET HEAD POST>
     deny from all
 </LimitExcept>
 ```
-## 7. HTTP TRACE metodunu devre disi birakin
+## 7. HTTP TRACE metodunu devre dışı birakin
 Default olarak Apache web server TRACE metodu etkindir. Bu durum Cross Site Tracing atagina ve
-saldirganlarin kullanicilarin cookie bilgilerine ulasmasina olanak saglar. Bu nedenle TraceEnable
-ayarini off yapmaniz bu tur ataklari onlemenizi saglayacaktir. $APACHE_INST_DIR/apache2.conf
-dosyasinda asagidaki sekilde degisiklik yaptiktan sonra Apache' yi tekrar baslatabilirsiniz.
+saldirganların kullanıcıların cookie bilgilerine ulasmasina olanak saglar. Bu nedenle TraceEnable
+ayarini off yapmaniz bu tur atakları önlemenizi saglayacaktir. $APACHE_INST_DIR/apache2.conf
+dosyasında asağıdaki sekilde degisiklik yaptıktan sonra Apache' yi tekrar baslatabilirsiniz.
 ```
 TraceEnable off
 ```
-Bu sekilde serverınız TRACE metodlarina izin vermeyecek ve Cross Site Tracing ataklarini 
+Bu sekilde serverınız TRACE metodlarına izin vermeyecek ve Cross Site Tracing ataklarını 
 bloklayacaktir.
 
 ## 8. Cookie'yi HttpOnly ve Secure flag ile olusturun
 Cogu Cross Site Scripting atagini cookie de HttpOnly ve Secure flagleri ile engelleyebilirsiniz.
 HttpOnly ve Secure flagleri olmadan cookieler manipule edilerek saldirilar yapilabilir.
-HttpOnly ve Secure flaglerini set etmek icin oncelikle headers modulunu etkin hale getirmeniz gerekiyor. 
+HttpOnly ve Secure flaglerini set etmek için oncelikle headers modulunu etkin hale getirmeniz gerekiyor. 
 Ubuntu'da su sekilde yapabilirsiniz
 ```
 a2enmod headers
 ```
-Ardindan $APACHE_INST_DIR/apache2.conf dosyasinda asagidaki degisikligi yapmaniz gerekiyor.
+Ardindan $APACHE_INST_DIR/apache2.conf dosyasında asağıdaki değişikliği yapmaniz gerekiyor.
 
 ```
 Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
 ```
 
 Bu sekilde cookienin sonunda HttpOnly ve Secure flaglerini eklemis oluyorsunuz. Degisiklikleri
-etkin hale getirmek icin Apache'yi yeniden baslatmaniz gerekiyor.
+etkin hale getirmek için Apache'yi yeniden baslatmaniz gerekiyor.
 
-## 9. Clickjacking ataklarindan koruma
-Clickjacking saldirganlarin site icerisinde tiklanabilir iceriklere hyperlinkler gizlemesi 
-kullanicilari yaniltmasidir. Bunu engellemek icin conf dosyasina su satiri ekleyebilirsiniz. 
-Bu yontemde de Header'da degisiklik yapabilmeniz icin Apache' nin header modulunu onceki gibi 
+## 9. Clickjacking ataklarından koruma
+Clickjacking saldirganların site icerisinde tiklanabilir iceriklere hyperlinkler gizlemesi 
+kullanıcıları yaniltmasidir. Bunu engellemek için conf dosyasina su satırı ekleyebilirsiniz. 
+Bu yontemde de Header'da degisiklik yapabilmeniz için Apache' nin header modulunu onceki gibi 
 etkin hale getirmeniz gerekiyor. 
 ```
 Header always append X-Frame-Options SAMEORIGIN
 ```
 
-## 10. Server Side Include lari devre disi birakma
+## 10. Server Side Include ları devre dışı birakma
 Server Side Include(SSI) lar server uzerine ek yuk bindirdiginden cok yogun bir trafik aliyorsaniz
-veya ortak bir environment kullaniyorsaniz SSI' i devre disi birakmayi dusunebilirsiniz.
-SSI'i devre disi birakacaginiz direcotry directive' inde asagidaki gibi degisiklik yapabilirsiniz.
+veya ortak bir environment kullaniyorsaniz SSI' i devre dışı birakmayi dusunebilirsiniz.
+SSI'i devre dışı bırakacağınız direcotry directive' inde asağıdaki gibi değişiklik yapabilirsiniz.
 ```
 <Directory /var/www/html>  
     Options -Includes -Indexes  
@@ -127,21 +126,21 @@ SSI'i devre disi birakacaginiz direcotry directive' inde asagidaki gibi degisikl
 ```
 ## 11. X-XSS Korunmasi
 Cross Site Scripting korumasi bircok web browser da bypass edilebiliyor. Ancak web uygulamasi
-icin bu korumayi zorla etkin hale getirebilirsiniz. Bunun icin conf dosyasina asagidaki satiri
+için bu korumayi zorla etkin hale getirebilirsiniz. Bunun için conf dosyasina asağıdaki satırı
 ekleyebilirsiniz.
 ```
 Header X-XSS-Protection "1; mode=block"
 ```
-## 12. HTTP 1.0 protokolunu kullanim disi birakma
+## 12. HTTP 1.0 protokolunu kullanim dışı birakma
 Güvenlik acisindan eski protokolleri kullanmak riskli oldugundan HTTP 1.0 protokolunu kullanim
-disi birakabilirsiniz. Bunun icin rewrite modulunu kullanmaniz gerekecek. Rewrite modulunu etkin
-hale getirmek icin 
+dışı birakabilirsiniz. Bunun için rewrite modulunu kullanmaniz gerekecek. Rewrite modulunu etkin
+hale getirmek için 
 ```
 a2enmod rewrite
 ```
 komutunu kullanin.
 
-Asagidaki satirlari conf dosyasina ekleyin.
+Asağıdaki satırları conf dosyasina ekleyin.
 ```
 RewriteEngine On  
 RewriteCondition %{THE_REQUEST} !HTTP/1.1$  
@@ -151,42 +150,42 @@ RewriteRule .* - [F]
 ve Apache' yi yeniden baslatin.
 
 ## 13. Timeout degerini kucultme
-Apache' de default olarak timeout degeri 300 saniye. Bu DoS ataklarinin kurbani olabileceginiz
-anlamina gelebilir. Timeout degerini kucultmek icin asagidaki satiri conf dosyasina ekleyebilirsiniz.
+Apache' de default olarak timeout degeri 300 saniye. Bu DoS ataklarının kurbani olabileceginiz
+anlamina gelebilir. Timeout degerini kucultmek için asağıdaki satırı conf dosyasina ekleyebilirsiniz.
 ```
 Timeout 60
 ```
 ## 14. mod_security modulunun kullanilmasi
 
-Mod Security acik kaynak kodlu bir Web Application Firewall' dur. Genel bir web uygulamasi 
-korumasi icin ana kurallar belirlenmistir.
+Mod Security açık kaynak kodlu bir Web Application Firewall' dur. Genel bir web uygulamasi 
+korumasi için ana kurallar belirlenmistir.
 
 ### 14.1 mod_security kurulumu
 
-Mod Security' yi kurmak icin asagidaki komutu calistirin.
+Mod Security' yi kurmak için asağıdaki komutu calistirin.
 ```
 $ sudo apt-get install libapache2-mod-security2
 ```
-modulu etkin hale getirmek icin 
+modulu etkin hale getirmek için 
 ```
 a2enmod security2
 ```  
-Baska UNIX distolarda core rule lari da ayrica indirip aktif hale getirmeniz gerekebilir. 
-Bunun icin asagidaki adimlari takip edebilirsiniz.
+Baska UNIX distolarda core rule ları da ayrica indirip aktif hale getirmeniz gerekebilir. 
+Bunun için asağıdaki adimları takip edebilirsiniz.
 
 [https://github.com/SpiderLabs/owasp-modsecurity-crs/zipball/master](https://github.com/SpiderLabs/owasp-modsecurity-crs/zipball/master)  
-Bu linkten core rule'lari indirdikten sonra zip dosyasini acin. Icindeki dosylari `$APACHE_INST_DIR/conf/` directory'sine
+Bu linkten core rule'ları indirdikten sonra zip dosyasini acin. Içindeki dosyları `$APACHE_INST_DIR/conf/` directory'sine
 kopyalayin. `modsecurity_crs_10_setup.conf.example` dosyasini `modsecurity_crs_10_setup.conf` 
 olarak adlandirin.  
 
-Bu rule'lari etkinlestirmek icin de conf dosyasina asagidaki directive'i ekleyin
+Bu rule'ları etkinlestirmek için de conf dosyasina asağıdaki directive'i ekleyin
 ```
 <IfModule security2_module>  
     Include conf/modsecurity_crs_10_setup.conf  
     Include conf/base_rules/*.conf  
 </IfModule>
 ```
-su an mod_security sayesinde web uygulamaniz icin bir WAF kurmus bulunmaktasiniz.
+su an mod_security sayesinde web uygulamaniz için bir WAF kurmuş bulunmaktasınız.
 
 
 ## Referanslar
